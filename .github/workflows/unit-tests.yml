@@ -1,0 +1,187 @@
+name: Unit Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+    paths:
+      - "services/**/*.ts"
+      - "services/**/*.js"
+      - "services/**/tests/**/*.ts"
+      - "services/**/jest.config.js"
+      - "libs/**/*.ts"
+      - "libs/**/*.js"
+      - "libs/**/tests/**/*.ts"
+      - "libs/**/jest.config.js"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - ".github/workflows/unit-tests.yml"
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+env:
+  NODE_VERSION: "20.x"
+
+jobs:
+  test:
+    name: Services and Libs unit tests (Jest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+
+      - name: Cache node_modules per package
+        uses: actions/cache@v4
+        with:
+          path: |
+            services/*/node_modules
+            libs/*/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - run: npm run ci:all
+
+      - name: Check for relevant file changes
+        id: check_changes
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE_SHA="${{ github.event.before }}"
+          fi
+          CHANGED_FILES=$(git diff --name-only "$BASE_SHA" HEAD -- services/ libs/)
+          RELEVANT=$(echo "$CHANGED_FILES" | grep -E '\.(ts|js)$' | grep -v '\.d\.ts$' || true)
+          if [[ -n "$RELEVANT" ]]; then
+            echo "required_tests=true" >> $GITHUB_OUTPUT
+          else
+            echo "required_tests=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Run tests with coverage
+        if: steps.check_changes.outputs.required_tests == 'true'
+        id: run_tests
+        run: npm run test:all
+        env:
+          JEST_JUNIT_OUTPUT_DIR: test-results
+          JEST_JUNIT_OUTPUT_NAME: junit.xml
+
+      - name: Install xmlstarlet
+        if: always() && steps.check_changes.outputs.required_tests == 'true'
+        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
+
+      - name: Merge JUnit reports
+        if: always() && steps.check_changes.outputs.required_tests == 'true'
+        run: |
+          mkdir -p merged-reports
+          echo '<testsuites>' > merged-reports/junit.xml
+          for junit in $(find services libs -name junit.xml -not -path "*/merged-reports/*"); do
+            xmlstarlet sel -t -c "//testsuite" "$junit" >> merged-reports/junit.xml
+          done
+          echo '</testsuites>' >> merged-reports/junit.xml
+
+      - name: Generate coverage report
+        id: coverage
+        if: always() && steps.check_changes.outputs.required_tests == 'true'
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: "services/*/coverage/cobertura-coverage.xml,libs/*/coverage/cobertura-coverage.xml"
+          badge: true
+          fail_below_min: true
+          format: markdown
+          thresholds: "85 90"
+          output: file
+
+      - name: Create test summary
+        id: test_summary
+        if: always() && steps.check_changes.outputs.required_tests == 'true'
+        run: |
+          JUNIT="merged-reports/junit.xml"
+          total=$(xmlstarlet sel -t -v "sum(//testsuite/@tests)" "$JUNIT")
+          failures=$(xmlstarlet sel -t -v "sum(//testsuite/@failures)" "$JUNIT")
+          errors=$(xmlstarlet sel -t -v "sum(//testsuite/@errors)" "$JUNIT")
+
+          if [[ "$failures" -gt 0 || "$errors" -gt 0 ]]; then
+            status_icon="❌"
+          else
+            status_icon="✅"
+          fi
+
+          echo "### $status_icon Resultados de pruebas" > test-summary.md
+          echo "" >> test-summary.md
+          echo "- **Total:** $total" >> test-summary.md
+          echo "- **Fallidas:** $failures" >> test-summary.md
+          echo "- **Errores:** $errors" >> test-summary.md
+          echo "" >> test-summary.md
+
+          if [[ "$failures" -gt 0 || "$errors" -gt 0 ]]; then
+            failed_tests=$(xmlstarlet sel -t -m "//testcase[failure or error]" -v "@name" -n "$JUNIT" | sort -u)
+            echo "**Tests fallidos:**" >> test-summary.md
+            echo '```' >> test-summary.md
+            echo "$failed_tests" >> test-summary.md
+            echo '```' >> test-summary.md
+          fi
+
+      - name: Fail job if tests failed
+        if: steps.run_tests.outcome == 'failure' && steps.check_changes.outputs.required_tests == 'true'
+        run: exit 1
+
+      - name: Prepare fallback comment
+        if: always() && github.event_name == 'pull_request' && steps.check_changes.outputs.required_tests == 'false'
+        run: |
+          echo "### ℹ️ No se ejecutaron pruebas" > test-summary.md
+          echo "No se detectaron cambios en archivos fuente o de test dentro de \`services\` o \`libs\`." > code-coverage-results.md
+
+      - name: Read test summary
+        id: read_summary
+        if: always() && github.event_name == 'pull_request'
+        run: |
+          if [ -f test-summary.md ]; then
+            content=$(cat test-summary.md)
+            delimiter="EOF_$(date +%s)"
+            echo "content<<$delimiter" >> $GITHUB_OUTPUT
+            echo "$content" >> $GITHUB_OUTPUT
+            echo "$delimiter" >> $GITHUB_OUTPUT
+          else
+            echo "content=### ⚠️ No se encontró resumen de pruebas" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Read coverage report
+        id: read_coverage
+        if: always() && github.event_name == 'pull_request'
+        run: |
+          if [ -f code-coverage-results.md ]; then
+            content=$(cat code-coverage-results.md)
+            delimiter="EOF_$(date +%s)"
+            echo "content<<$delimiter" >> $GITHUB_OUTPUT
+            echo "$content" >> $GITHUB_OUTPUT
+            echo "$delimiter" >> $GITHUB_OUTPUT
+          else
+            echo "content=No se pudo generar el reporte de cobertura." >> $GITHUB_OUTPUT
+          fi
+
+      - name: Post combined PR comment
+        if: always() && github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: backend-test-coverage
+          recreate: true
+          message: |
+            ${{ steps.read_summary.outputs.content }}
+            
+            ---
+            
+            ### 📊 Cobertura de código
+            
+            ${{ steps.read_coverage.outputs.content }}

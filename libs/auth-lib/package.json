@@ -1,0 +1,46 @@
+{
+  "name": "@move/auth-lib",
+  "version": "1.0.0",
+  "description": "Auth0 + roles + Redis middleware for service-based architecture",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "test": "jest --ci --coverage --reporters=default --reporters=jest-junit",
+    "clean": "rm -rf dist",
+    "prepack": "npm run clean && npm run build",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "biome:check": "biome check .",
+    "biome:ci": "biome check . --reporter json --diagnostic-level=error > biome-report.json || true",
+    "biome:fix": "biome check --write ."
+  },
+  "dependencies": {
+    "@move/errors-lib": "file:../errors-lib",
+    "@move/logs-lib": "file:../logs-lib",
+    "express": "^4.22.2",
+    "express-async-errors": "^3.1.1",
+    "express-oauth2-jwt-bearer": "^1.9.0",
+    "jsonwebtoken": "^9.0.3",
+    "jwks-rsa": "^4.1.0",
+    "mongoose": "^9.7.0",
+    "opossum": "^9.0.0",
+    "redis": "^6.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.16",
+    "@types/express": "^4.17.25",
+    "@types/jest": "^30.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/mongoose": "^5.11.96",
+    "@types/node": "^20.19.43",
+    "@types/opossum": "^8.1.9",
+    "jest": "^30.4.2",
+    "jest-junit": "^17.0.0",
+    "ts-jest": "^29.4.11",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  }
+}

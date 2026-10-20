@@ -1,0 +1,2155 @@
+{
+  "info": {
+    "_postman_id": "48e6a361-171f-4a35-98c5-41e5dadd8456",
+    "name": "MOVE - Arquitectura",
+    "description": "Existen estos users en Auth0 para poder obtener tokens:\n\n- admin@example.com\n    \n- clientcompany@example.com\n    \n- clientindividual@example.com\n    \n- driver@example.com\n    \n- operator@example.com\n    \n\n#### **Todos tienen como password: Password123!**\n\nSe debe limpiar el cookies antes de obtener un nuevo token para otro usuario:\n\n<img src=\"https://content.pstmn.io/f975dac4-c84d-40f8-94d9-f31c202d0c81/aW1hZ2UucG5n\" width=\"530\" height=\"608\">",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48142203"
+  },
+  "item": [
+    {
+      "name": "Usuarios y roles",
+      "item": [
+        {
+          "name": "Cliente",
+          "item": [
+            {
+              "name": "Crear cliente individual - Valor por defecto",
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessToken",
+                      "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2YTMwNWRjYTMwZTMxZjg1NDRkMGRmYmIiLCJhdWQiOlsiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3ODIyMzgxNjEsImV4cCI6MTc4MjMyNDU2MSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6Ikd1VTlsU3pRM0NUbVA0WUptVHd3elZqWnhwam5iTVVYIn0.baq9aVGTR4POVzhyZExYUNqAWEPKuJDkVr6zS6C3gEFITL-_SINNVFExM88mNyh-gla7yTH_aL4YAfN48Y1OmHZfgf2HSHPMkFmTYUQLiLFXGg2DKtzH2pscDVx75nWTRPjx7r7SrtRU6grqs7NTPH3uilH-m4HO13JFzR1UQ90pvXqamJ1sTUkNEOyhQ5c8_2BiA4ZN_0K45Qxw7PKDco8C-Um_vxs4_NYnF_bbCjKIApC2DtGtikift5F72weadS0-FR5hpSMx_apA79sC0lvNn_luNQuB5boTDvLYkP2L4lyyRrIp_TjR1TZfUVDh8pe9NlzjVn-npQvJHeNZHg",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"clientindividual@gmail.com\",\r\n    \"name\": \"Client Individual\",\r\n    \"phone\": \"123123123\",\r\n    \"city\": \"Montevideo\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}{{identity_service}}register",
+                  "host": [
+                    "{{base_url}}{{identity_service}}register"
+                  ]
+                },
+                "description": "Necesario colocar en authorization el token del cliente individual (es necesario inciar sesión primero en la colección) o traerse el del padre y que ese sea el cliente individual\n\n<img src=\"https://content.pstmn.io/ccba3c10-a56a-4f2d-9e62-ac603db0b2d6/aW1hZ2UucG5n\" alt=\"\" height=\"380\" width=\"921\">"
+              },
+              "response": []
+            },
+            {
+              "name": "Crear cliente empresa",
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessToken",
+                      "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2YTNhZDZiNjIwNDlkODE0MmEzOGJiOGMiLCJhdWQiOlsiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3ODIzMzQ0NjIsImV4cCI6MTc4MjQyMDg2Miwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6Ikd1VTlsU3pRM0NUbVA0WUptVHd3elZqWnhwam5iTVVYIn0.h47D8C0A0QkSrFtw5s11gtcl4yK-sdeSWVF65jmHMiNXz6Re77vXFHu2hkUMPt0j51OfDJCdxZ1O03pdKwRJ1fTadcKF0_KKkjtHMVhteX3TEVpBvFlrPg7q6-mkXeO_wTLrD1iVm__nsEMgVMSNhALmEx-V0NQQ6QvN5mmTZ1bOTF2ZrJHMvDZf8YzxIUAc1OYcvZrm3bNdY6u8N3J7Owg5QuBXdEfwDIhcYZOzEoJaVIOJ11p0XyKh81rVGCHfa_4-440YoYl0wj7JdjcA68LrwE8jdlhLKDZcSIUeYMGpw5fdzUIQknTNaz4KkTFb1XExeQO6FBy6Uo2nxBoJwA",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"clientcompany@gmail.com\",\r\n    \"roles\": [ \"client_company\" ],\r\n    \"name\": \"Client Company\",\r\n    \"phone\": \"123123123\",\r\n    \"city\": \"Montevideo\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}{{identity_service}}register",
+                  "host": [
+                    "{{base_url}}{{identity_service}}register"
+                  ]
+                },
+                "description": "Necesario colocar en authorization el token del cliente empresa o traerse el del padre y que ese sea el cliente empresa."
+              },
+              "response": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Administrador",
+          "item": [
+            {
+              "name": "Cambiar roles",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"targetUserId\": \"auth0|6a305dca30e31f8544d0dfbb\",\r\n    \"roles\": [\"client_individual\", \"operator\"]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}{{identity_service}}users/roles",
+                  "host": [
+                    "{{base_url}}{{identity_service}}users"
+                  ],
+                  "path": [
+                    "roles"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "registrar usuario",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJTV2NhWWM4elRHUDU5VG44alNJaDc3eG9qQ0ZPUzc1YkBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJpYXQiOjE3ODE2NDc2MTUsImV4cCI6MTc4MTczNDAxNSwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwiYXpwIjoiU1djYVljOHpUR1A1OVRuOGpTSWg3N3hvakNGT1M3NWIifQ.IKi813k4xZ-SYZQtlZ1_GKILupIvGH7HR8MH8QPJre4JrV1dpsEXpMtp3S9HJdbkIw5HytV_zcJdBhHKQ_yxUtoAg8LrpVuEi6l48LvM2t_T3-ISM1TpcmTdMnjUe5t-gl3rIYUXKb0iOMmF3NY_HXZxhVvSE_ydYic8QJPrxkqSOrD9O74PekM1n63vi5V0XBtJxioq0LgHhH0WBafrp5dPM2IpfC5YHqQwXCeJao2UkMdzQTzmGTjLswRVMTwVlcLGQuhk1bjF8BhGQ4eCwEQ4hBXhF3TUPXEuLsYIvx-jXDAR_n2Li7v4AlMq0-s4RggYvgMDZLFzwp-BXb3tdA",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"saa@m.co\",\r\n    \"roles\": [ \"client_individual\" ],\r\n    \"name\": \"alo\",\r\n    \"phone\": \"123123123\",\r\n    \"city\": \"shalom\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/identity/register",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "identity",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Categorias csv",
+      "item": [
+        {
+          "name": "Subir CSV",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "e78ea53e-4883-4abc-b6f3-51cc1a84498e",
+                  "src": "postman-cloud:///1f16c146-de47-4330-905a-2ff978fa6d2a"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}categories/import",
+              "host": [
+                "{{base_url}}{{configuration_service}}categories"
+              ],
+              "path": [
+                "import"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar nueva categoría",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nameEn\": \"Musical Instruments & Equipment\",\r\n    \"nameEs\": \"Instrumentos Musicales y Equipo\",\r\n    \"description\": \"Envío de instrumentos musicales y equipos: guitarras acústicas y eléctricas, guitarras bajos, violines, teclados, pianos digitales, baterías acústicas y electrónicas, platillos, trompetas, saxofones, flautas, armónicas, amplificadores, altavoces, micrófonos, cables para instrumentos, correas, púas, cuerdas, atriles, metrónomos, afinadores, pedales de efectos y kits de inicio completos para músicos.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}categories",
+              "host": [
+                "{{base_url}}{{configuration_service}}categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar categoría",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nameEn\": \"Musical Instruments & Equipment\",\r\n    \"nameEs\": \"Instrumentos Musicales y Equipo\",\r\n    \"description\": \"Envío de instrumentos musicales de calidad para aficionados y profesionales: guitarras de madera maciza y electroacústicas, bajos de 4 y 5 cuerdas, pianos de cola y verticales, sintetizadores modulares y workstations, baterías acústicas con parches de alta resistencia y kits electrónicos, instrumentos de viento (saxofones, trompetas, clarinetes) y de metal para bandas, arpas, ukeleles, así como sistemas de refuerzo de sonido (PA), monitores de estudio, interfaces de audio, micrófonos de condensador y dinámicos, soportes, estuches rígidos, fundas acolchadas, cuerdas, baquetas, fundas para púas, pedales de efectos, afinadores cromáticos y todo tipo de accesorios para mantenimiento, reparación y puesta a punto.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}categories/271",
+              "host": [
+                "{{base_url}}{{configuration_service}}categories"
+              ],
+              "path": [
+                "271"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Reglas",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}rules",
+              "host": [
+                "{{base_url}}{{configuration_service}}rules"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Asignar / reemplazar reglas de categoría",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n     \"rules\": [2,1,3] \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}/categories/217/rules",
+              "host": [
+                "{{base_url}}{{configuration_service}}"
+              ],
+              "path": [
+                "categories",
+                "217",
+                "rules"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Categorias (NO JWT)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Internal-Service-Token",
+                "value": "6345e17d5c97770f47fc4cfa0b7e2c32",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}categories/catalog",
+              "host": [
+                "{{base_url}}{{configuration_service}}categories"
+              ],
+              "path": [
+                "catalog"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "oauth2",
+        "oauth2": [
+          {
+            "key": "addTokenTo",
+            "value": "header",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Zonas",
+      "item": [
+        {
+          "name": "Agregar zona preferente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Goes\",\r\n  \"type\": \"PREFERRED_ZONE\",\r\n  \"coordinates\": [[-56.184140380917626, -34.874295392536574],[-56.175321247242934, -34.878009217238336],[-56.17877544423626, -34.88392411568521],[-56.18626463045776, -34.88100216724481],[-56.1862002273133, -34.87748156037314],[-56.184140380917626, -34.874295392536574]]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}zones",
+              "host": [
+                "{{base_url}}{{configuration_service}}zones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar zona roja",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"La Union\",\r\n  \"type\": \"RED_ZONE\",\r\n  \"coordinates\": [[-56.15123949853742, -34.8767256009135],[-56.133559820764276, -34.86764136593015],[-56.12574837780785, -34.873343792190454],[-56.12879223684255, -34.886793590565404],[-56.13793460449564, -34.88640726206956],[-56.15123949853742, -34.8767256009135]]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}zones",
+              "host": [
+                "{{base_url}}{{configuration_service}}zones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener zona",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}zones?type=RED_ZONE&limit=50&skip=0",
+              "host": [
+                "{{base_url}}{{configuration_service}}zones"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "RED_ZONE"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "skip",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar zona",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Centro\",\r\n  \"type\": \"PREFERRED_ZONE\",\r\n  \"coordinates\": [[-56.20,-34.90],[-58.20,-34.88],[56.18,-34.88],[-56.18,-34.90],[-56.20,-34.90]]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}zones/1",
+              "host": [
+                "{{base_url}}{{configuration_service}}zones"
+              ],
+              "path": [
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar zona",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth1}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}zones/1",
+              "host": [
+                "{{base_url}}{{configuration_service}}zones"
+              ],
+              "path": [
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Vehiculos",
+      "item": [
+        {
+          "name": "Agregar vehículo",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"licensePlate\": \"VAN-143\",\r\n  \"type\": \"VAN\",\r\n  \"capacity\": 4,\r\n  \"deviceId\": \"1\",\r\n  \"characteristics\":{},\r\n  \"available\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}vehicles",
+              "host": [
+                "{{base_url}}{{configuration_service}}vehicles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Editar vehículo",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"type\": \"VAN\",\r\n  \"capacity\": 4,\r\n  \"characteristics\": { \"refrigerated\": true },\r\n  \"available\": false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}vehicles/1",
+              "host": [
+                "{{base_url}}{{configuration_service}}vehicles"
+              ],
+              "path": [
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener vehículos",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{configuration_service}}vehicles",
+              "host": [
+                "{{base_url}}{{configuration_service}}vehicles"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Booking",
+      "item": [
+        {
+          "name": "Cliente individual",
+          "item": [
+            {
+              "name": "Agregar booking",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"origin\": [-56.208705, -34.873854],\r\n    \"destination\": [-56.137680, -34.905959],\r\n    \"date\":\"10/07/2026\",\r\n    \"items\":[{\r\n        \"description\": \"Un dinosaurio azul\"\r\n    }]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}{{booking_service}}individual",
+                  "host": [
+                    "{{base_url}}{{booking_service}}individual"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Agregar booking - Valor y tamaño",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"origin\": [-56.208705, -34.873854],\r\n    \"destination\": [-56.137680, -34.905959],\r\n    \"date\":\"10/07/2026\",\r\n    \"items\":[{\r\n        \"description\": \"Un dinosaurio azul\",\r\n        \"value\": \"500\",\r\n        \"size\": \"medium\"\r\n    }]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}{{booking_service}}individual",
+                  "host": [
+                    "{{base_url}}{{booking_service}}individual"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Agregar booking - Clasificar mal",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"origin\": [-56.208705, -34.873854],\r\n    \"destination\": [-56.137680, -34.905959],\r\n    \"date\":\"10/07/2026\",\r\n    \"items\":[{\r\n        \"description\": \"abcdefghijklmnopqrstvwxyz\"\r\n    }]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}{{booking_service}}individual",
+                  "host": [
+                    "{{base_url}}{{booking_service}}individual"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Agregar booking - Fecha pasado",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"origin\": [-56.208705, -34.873854],\r\n    \"destination\": [-56.137680, -34.905959],\r\n    \"date\":\"03/07/2026\",\r\n    \"items\":[{\r\n        \"description\": \"Un dinosaurio azul\"\r\n    }]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}{{booking_service}}individual",
+                  "host": [
+                    "{{base_url}}{{booking_service}}individual"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Agregar booking - Sin item",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"origin\": [-56.208705, -34.873854],\r\n    \"destination\": [-56.137680, -34.905959],\r\n    \"date\":\"10/07/2026\",\r\n    \"items\":[]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}{{booking_service}}individual",
+                  "host": [
+                    "{{base_url}}{{booking_service}}individual"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Agregar booking - Roles incorrectos",
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "tokenType",
+                      "value": "Bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessToken",
+                      "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2YTNhZDZiNjIwNDlkODE0MmEzOGJiOGMiLCJhdWQiOlsiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3ODIyNDA5OTYsImV4cCI6MTc4MjMyNzM5Niwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6Ikd1VTlsU3pRM0NUbVA0WUptVHd3elZqWnhwam5iTVVYIn0.PiqYajbSV9H3ch3bA3dSN912Cl55GATNPioHrEu_opCTwqivXgH95b4Ru34ebqPOhLwbehAQsH-BZfId6JPSPH8ah8wekuK0kkPvHvPKIo1CHPd1r4dQw2f2U7ksV-VWX6XN1AAiqoCBDn6J7rn4XL2uxni5Fzq15yYb_b5vLKKfG9kwVoqS5v3Lt7jOxb8VrZW-qmJ_0w56V2UPjd6u019iMbrEb-4FXgcKnXlouG2opAZfBHD68RmiEUw0nmgErwvaBOHP7CfTDrW-TXffLIFYZVIUARg81eBYCUftyzEZ8asYgW1Y-IOPyOWbSqcDXH2UlHowGCJuw9ZxPiVlMg",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"origin\": [-56.208705, -34.873854],\r\n    \"destination\": [-56.137680, -34.905959],\r\n    \"date\":\"10/07/2026\",\r\n    \"items\":[{\r\n        \"description\": \"Un dinosaurio azul\"\r\n    }]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}{{booking_service}}individual",
+                  "host": [
+                    "{{base_url}}{{booking_service}}individual"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "auth": {
+            "type": "oauth2",
+            "oauth2": [
+              {
+                "key": "tokenType",
+                "value": "Bearer",
+                "type": "string"
+              },
+              {
+                "key": "accessToken",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2YTMwNWRjYTMwZTMxZjg1NDRkMGRmYmIiLCJhdWQiOlsiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3ODIzNTcyNjEsImV4cCI6MTc4MjQ0MzY2MSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6Ikd1VTlsU3pRM0NUbVA0WUptVHd3elZqWnhwam5iTVVYIn0.a-6klg5mftcklt2wDq0PCAsvosIne2SJ8bkzhhLx8EgAVzKqsjGXy7x4faDPQponbQ2zV7ZadclnqeP3bzAzIwfpYinE-AVcHe-lo3llfs9CJ3F68QLAo7DzKjV1Mo2Am2XW-AoNMbLf_Qlhyl_WZEDXOgVAZA84GuMC1KIyw5nKfDMSZ8aC0VWQlq5gjr-uMJy1ZB4eybJVRMiL5a7sNeU7STtSuvWK4aJCIwIydXNBvwIVi56POPtZR2sh1xCN2hU0x7_sc-KQxaSWoDn-mQ_E2ELvjvsprljQoxCVYgFRCNYFCMFAErQrCJHh9L1mjncMUzrzF-N8eCWdcDRjEw",
+                "type": "string"
+              },
+              {
+                "key": "addTokenTo",
+                "value": "header",
+                "type": "string"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cliente empresa",
+          "item": [
+            {
+              "name": "Preregistrar datos",
+              "item": [
+                {
+                  "name": "Agregar dato origen",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "if (pm.response.code === 201) {\r",
+                          "    const response = pm.response.json();\r",
+                          "    pm.environment.set('origin_id', response.data.id);\r",
+                          "    console.log('Origin id guardado');\r",
+                          "}"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"coordinates\": [-34.873854, -56.208705]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company/preregistration/origins",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ],
+                      "path": [
+                        "preregistration",
+                        "origins"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Actualizar dato origen",
+                  "request": {
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"coordinates\": [-56.160637, -34.872773]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company/preregistration/origins/{{origin_id}}",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ],
+                      "path": [
+                        "preregistration",
+                        "origins",
+                        "{{origin_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Eliminar dato origen",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company/preregistration/origins/{{origin_id}}",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ],
+                      "path": [
+                        "preregistration",
+                        "origins",
+                        "{{origin_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Agregar dato destino",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"coordinates\": [-56.032278, -34.861085]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company/preregistration/destinations",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ],
+                      "path": [
+                        "preregistration",
+                        "destinations"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Actualizar dato destino",
+                  "request": {
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"coordinates\": [-56.020948, -34.873161]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company/preregistration/destinations/6a3b7860c38aaa662ed2f365",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ],
+                      "path": [
+                        "preregistration",
+                        "destinations",
+                        "6a3b7860c38aaa662ed2f365"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Agregar dato item",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"description\": \"Sillas de oficina\",\r\n  \"category\": \"Furniture\",\r\n  \"value\": \"1500\",\r\n  \"size\": \"medium\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company/preregistration/items",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ],
+                      "path": [
+                        "preregistration",
+                        "items"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Actualizar dato item",
+                  "request": {
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"description\": \"puzzle de 100 piezas\",\r\n  \"category\": \"Puzzles\",\r\n  \"value\": \"700\",\r\n  \"size\": \"small\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company/preregistration/items/6a3b790bc38aaa662ed2f367",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ],
+                      "path": [
+                        "preregistration",
+                        "items",
+                        "6a3b790bc38aaa662ed2f367"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Actualizar dato item - Category invalida",
+                  "request": {
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"description\": \"algo inexplicable\",\r\n  \"category\": \"no existe\",\r\n  \"value\": \"10000\",\r\n  \"size\": \"small\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company/preregistration/items/6a3b790bc38aaa662ed2f367",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ],
+                      "path": [
+                        "preregistration",
+                        "items",
+                        "6a3b790bc38aaa662ed2f367"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Obtener datos preregistrados",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company/preregistration",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ],
+                      "path": [
+                        "preregistration"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Agregar booking",
+              "item": [
+                {
+                  "name": "Agregar booking",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"originId\": \"6a3cd482d3edb6c992aa1ea2\",\r\n    \"destinationId\": \"6a3cd48ad3edb6c992aa1ea4\",\r\n    \"date\":\"12/07/2026\",\r\n    \"items\":[{\r\n        \"registeredItemId\": \"6a3cd6ebfd36bc54422f94c8\"\r\n    }]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ]
+                    },
+                    "description": "```\n{\n  \"companyUserId\": \"auth0|6a3ad6b62049d8142a38bb8c\",\n  \"origins\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"caseros\"\n    }\n  ],\n  \"destinations\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"peguajo\"\n    }\n  ],\n  \"items\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"description\": \"Industrial overlock sewing machine with 4-thread capability, automatic needle threader, and adjustable stitch length for heavy-duty fabrics\",\n      \"category\": \"Sewing Products\",\n      \"value\": \"450.00\",\n      \"size\": \"large\"\n    }\n  ]\n}\n\n```"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Agregar booking - Sin item",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"originId\": \"6a3af68cdee37cc49ca6c7fb\",\r\n    \"destinationId\": \"6a3af68cdee37cc49ca6c7fb\",\r\n    \"date\":\"10/07/2026\",\r\n    \"items\":[]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ]
+                    },
+                    "description": "```\n{\n  \"companyUserId\": \"auth0|6a3ad6b62049d8142a38bb8c\",\n  \"origins\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"caseros\"\n    }\n  ],\n  \"destinations\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"peguajo\"\n    }\n  ],\n  \"items\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"description\": \"Industrial overlock sewing machine with 4-thread capability, automatic needle threader, and adjustable stitch length for heavy-duty fabrics\",\n      \"category\": \"Sewing Products\",\n      \"value\": \"450.00\",\n      \"size\": \"large\"\n    }\n  ]\n}\n\n```"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Agregar booking - Item no registrado",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"originId\": \"6a3af68cdee37cc49ca6c7fb\",\r\n    \"destinationId\": \"6a3af68cdee37cc49ca6c7fb\",\r\n    \"date\":\"10/07/2026\",\r\n    \"items\":[{\r\n        \"registeredItemId\": \"1\"\r\n    }]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ]
+                    },
+                    "description": "```\n{\n  \"companyUserId\": \"auth0|6a3ad6b62049d8142a38bb8c\",\n  \"origins\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"caseros\"\n    }\n  ],\n  \"destinations\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"peguajo\"\n    }\n  ],\n  \"items\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"description\": \"Industrial overlock sewing machine with 4-thread capability, automatic needle threader, and adjustable stitch length for heavy-duty fabrics\",\n      \"category\": \"Sewing Products\",\n      \"value\": \"450.00\",\n      \"size\": \"large\"\n    }\n  ]\n}\n\n```"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Agregar booking - Fecha pasada",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"originId\": \"6a3af68cdee37cc49ca6c7fb\",\r\n    \"destinationId\": \"6a3af68cdee37cc49ca6c7fb\",\r\n    \"date\":\"03/06/2026\",\r\n    \"items\":[{\r\n        \"registeredItemId\": \"6a3af68cdee37cc49ca6c7fb\"\r\n    }]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ]
+                    },
+                    "description": "```\n{\n  \"companyUserId\": \"auth0|6a3ad6b62049d8142a38bb8c\",\n  \"origins\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"caseros\"\n    }\n  ],\n  \"destinations\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"peguajo\"\n    }\n  ],\n  \"items\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"description\": \"Industrial overlock sewing machine with 4-thread capability, automatic needle threader, and adjustable stitch length for heavy-duty fabrics\",\n      \"category\": \"Sewing Products\",\n      \"value\": \"450.00\",\n      \"size\": \"large\"\n    }\n  ]\n}\n\n```"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Agregar booking - Origen no existente",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"originId\": \"1\",\r\n    \"destinationId\": \"6a3af68cdee37cc49ca6c7fb\",\r\n    \"date\":\"10/07/2026\",\r\n    \"items\":[{\r\n        \"registeredItemId\": \"6a3af68cdee37cc49ca6c7fb\"\r\n    }]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ]
+                    },
+                    "description": "```\n{\n  \"companyUserId\": \"auth0|6a3ad6b62049d8142a38bb8c\",\n  \"origins\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"caseros\"\n    }\n  ],\n  \"destinations\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"peguajo\"\n    }\n  ],\n  \"items\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"description\": \"Industrial overlock sewing machine with 4-thread capability, automatic needle threader, and adjustable stitch length for heavy-duty fabrics\",\n      \"category\": \"Sewing Products\",\n      \"value\": \"450.00\",\n      \"size\": \"large\"\n    }\n  ]\n}\n\n```"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Agregar booking - Destino no existente",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"originId\": \"6a3af68cdee37cc49ca6c7fb\",\r\n    \"destinationId\": \"1\",\r\n    \"date\":\"10/07/2026\",\r\n    \"items\":[{\r\n        \"registeredItemId\": \"6a3af68cdee37cc49ca6c7fb\"\r\n    }]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ]
+                    },
+                    "description": "```\n{\n  \"companyUserId\": \"auth0|6a3ad6b62049d8142a38bb8c\",\n  \"origins\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"caseros\"\n    }\n  ],\n  \"destinations\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"peguajo\"\n    }\n  ],\n  \"items\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"description\": \"Industrial overlock sewing machine with 4-thread capability, automatic needle threader, and adjustable stitch length for heavy-duty fabrics\",\n      \"category\": \"Sewing Products\",\n      \"value\": \"450.00\",\n      \"size\": \"large\"\n    }\n  ]\n}\n\n```"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Agregar booking - Roles incorrectos",
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "tokenType",
+                          "value": "Bearer",
+                          "type": "string"
+                        },
+                        {
+                          "key": "addTokenTo",
+                          "value": "header",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"originId\": \"6a3af68cdee37cc49ca6c7fb\",\r\n    \"destinationId\": \"6a3af68cdee37cc49ca6c7fb\",\r\n    \"date\":\"10/07/2026\",\r\n    \"items\":[{\r\n        \"registeredItemId\": \"6a3af68cdee37cc49ca6c7fb\"\r\n    }]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}{{booking_service}}company",
+                      "host": [
+                        "{{base_url}}{{booking_service}}company"
+                      ]
+                    },
+                    "description": "```\n{\n  \"companyUserId\": \"auth0|6a3ad6b62049d8142a38bb8c\",\n  \"origins\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"caseros\"\n    }\n  ],\n  \"destinations\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"peguajo\"\n    }\n  ],\n  \"items\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"description\": \"Industrial overlock sewing machine with 4-thread capability, automatic needle threader, and adjustable stitch length for heavy-duty fabrics\",\n      \"category\": \"Sewing Products\",\n      \"value\": \"450.00\",\n      \"size\": \"large\"\n    }\n  ]\n}\n\n```"
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ],
+          "auth": {
+            "type": "oauth2",
+            "oauth2": [
+              {
+                "key": "tokenType",
+                "value": "Bearer",
+                "type": "string"
+              },
+              {
+                "key": "accessToken",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2YTNhZDZiNjIwNDlkODE0MmEzOGJiOGMiLCJhdWQiOlsiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3ODIzNTc2NzMsImV4cCI6MTc4MjQ0NDA3Mywic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6Ikd1VTlsU3pRM0NUbVA0WUptVHd3elZqWnhwam5iTVVYIn0.Ubekt2ITuyVQQIz_VBlAYL3_0vag5wCWv6T3XRAFKIuspNpHciqXvRglVNseRq0ptxCbnrnyipAEdIJGkiajCYkpuPvccFCPqpfUJsrqLJ4sSQxN_x7WVn8K3v9k3T8WOFnuNnCl8eswK8DmYGk6AqRZ-xAyIDCJo9F1kmrJ6kzY9vfsazHxSb-syCcEhBlYdYXX39EYnF_cKN6BYNq1hbfLtIA-SlGLElKheOhLTUmOnh0zK749CcCKjmecOkma_VHh_eaowvhKesWWUlxAB2H6yK5lyzlBWJ-auy91EG8Zgew-p8jPKexiKfdS1z3StkH-7hh7RQJ59L9BQ0DRJQ",
+                "type": "string"
+              },
+              {
+                "key": "addTokenTo",
+                "value": "header",
+                "type": "string"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Operador",
+          "item": [
+            {
+              "name": "Agarrar siguiente clasificacion",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJHdVU5bFN6UTNDVG1QNFlKbVR3d3pWalp4cGpuYk1VWEBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJpYXQiOjE3ODIzNDkzMjEsImV4cCI6MTc4MjQzNTcyMSwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwiYXpwIjoiR3VVOWxTelEzQ1RtUDRZSm1Ud3d6VmpaeHBqbmJNVVgifQ.GHbzGUg72bD2Wt-LElk8OXDgfJVchlb5P_veVkmEeElYi0z-JhtfDypvbglmpke_5jNrZrB48I-0jxQxarkETWGrtld00X_DVUOSMZTppeFmqe1HjxGKsMV6rTKIg3Xf8WouMttM0XtT0B8PWqLd-H-deOirrdkl9k4xirQdSgsTBSsTy0p4MRTb2ZDViS8aJELbFr7IYUzuAqv79tzRcSYPK8tvnD3tcth9hT_7aobXSOeg0UHr_jFw52vllO1AS0HunX-06fpHdIRsilS-sKdhiLRkwsJpHreO1UJVmor61kUgLt0XkjjR6ZNc_1LcnGJrUaxollOldkCzcF8NdA",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}{{booking_service}}manual-classification/next",
+                  "host": [
+                    "{{base_url}}{{booking_service}}manual-classification"
+                  ],
+                  "path": [
+                    "next"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Rechazar booking",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJHdVU5bFN6UTNDVG1QNFlKbVR3d3pWalp4cGpuYk1VWEBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJpYXQiOjE3ODIzNDkzMjEsImV4cCI6MTc4MjQzNTcyMSwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwiYXpwIjoiR3VVOWxTelEzQ1RtUDRZSm1Ud3d6VmpaeHBqbmJNVVgifQ.GHbzGUg72bD2Wt-LElk8OXDgfJVchlb5P_veVkmEeElYi0z-JhtfDypvbglmpke_5jNrZrB48I-0jxQxarkETWGrtld00X_DVUOSMZTppeFmqe1HjxGKsMV6rTKIg3Xf8WouMttM0XtT0B8PWqLd-H-deOirrdkl9k4xirQdSgsTBSsTy0p4MRTb2ZDViS8aJELbFr7IYUzuAqv79tzRcSYPK8tvnD3tcth9hT_7aobXSOeg0UHr_jFw52vllO1AS0HunX-06fpHdIRsilS-sKdhiLRkwsJpHreO1UJVmor61kUgLt0XkjjR6ZNc_1LcnGJrUaxollOldkCzcF8NdA",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}{{booking_service}}6a3c51024539ffd7eb8ed7f9/manual-classification/reject",
+                  "host": [
+                    "{{base_url}}{{booking_service}}6a3c51024539ffd7eb8ed7f9"
+                  ],
+                  "path": [
+                    "manual-classification",
+                    "reject"
+                  ]
+                },
+                "description": "```\n{\n  \"companyUserId\": \"auth0|6a3ad6b62049d8142a38bb8c\",\n  \"origins\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"caseros\"\n    }\n  ],\n  \"destinations\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"value\": \"peguajo\"\n    }\n  ],\n  \"items\": [\n    {\n      \"_id\": {\n        \"$oid\": \"6a3af68cdee37cc49ca6c7fb\"\n      },\n      \"description\": \"Industrial overlock sewing machine with 4-thread capability, automatic needle threader, and adjustable stitch length for heavy-duty fabrics\",\n      \"category\": \"Sewing Products\",\n      \"value\": \"450.00\",\n      \"size\": \"large\"\n    }\n  ]\n}\n\n```"
+              },
+              "response": []
+            },
+            {
+              "name": "Crear nuevo booking invalido",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJHdVU5bFN6UTNDVG1QNFlKbVR3d3pWalp4cGpuYk1VWEBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJpYXQiOjE3ODIzNDkzMjEsImV4cCI6MTc4MjQzNTcyMSwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwiYXpwIjoiR3VVOWxTelEzQ1RtUDRZSm1Ud3d6VmpaeHBqbmJNVVgifQ.GHbzGUg72bD2Wt-LElk8OXDgfJVchlb5P_veVkmEeElYi0z-JhtfDypvbglmpke_5jNrZrB48I-0jxQxarkETWGrtld00X_DVUOSMZTppeFmqe1HjxGKsMV6rTKIg3Xf8WouMttM0XtT0B8PWqLd-H-deOirrdkl9k4xirQdSgsTBSsTy0p4MRTb2ZDViS8aJELbFr7IYUzuAqv79tzRcSYPK8tvnD3tcth9hT_7aobXSOeg0UHr_jFw52vllO1AS0HunX-06fpHdIRsilS-sKdhiLRkwsJpHreO1UJVmor61kUgLt0XkjjR6ZNc_1LcnGJrUaxollOldkCzcF8NdA",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"origin\": [-56.208705, -34.873854],\r\n    \"destination\": [-56.137680, -34.905959],\r\n    \"date\":\"10/07/2026\",\r\n    \"items\":[{\r\n        \"description\": \"abcdefghijklmnopqrstvwxyz\"\r\n    }]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}{{booking_service}}individual",
+                  "host": [
+                    "{{base_url}}{{booking_service}}individual"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "auth": {
+            "type": "oauth2",
+            "oauth2": [
+              {
+                "key": "tokenType",
+                "value": "Bearer",
+                "type": "string"
+              },
+              {
+                "key": "accessToken",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2YTNhZDZiNjIwNDlkODE0MmEzOGJiOGMiLCJhdWQiOlsiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3ODIyNDA5OTYsImV4cCI6MTc4MjMyNzM5Niwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6Ikd1VTlsU3pRM0NUbVA0WUptVHd3elZqWnhwam5iTVVYIn0.PiqYajbSV9H3ch3bA3dSN912Cl55GATNPioHrEu_opCTwqivXgH95b4Ru34ebqPOhLwbehAQsH-BZfId6JPSPH8ah8wekuK0kkPvHvPKIo1CHPd1r4dQw2f2U7ksV-VWX6XN1AAiqoCBDn6J7rn4XL2uxni5Fzq15yYb_b5vLKKfG9kwVoqS5v3Lt7jOxb8VrZW-qmJ_0w56V2UPjd6u019iMbrEb-4FXgcKnXlouG2opAZfBHD68RmiEUw0nmgErwvaBOHP7CfTDrW-TXffLIFYZVIUARg81eBYCUftyzEZ8asYgW1Y-IOPyOWbSqcDXH2UlHowGCJuw9ZxPiVlMg",
+                "type": "string"
+              },
+              {
+                "key": "addTokenTo",
+                "value": "header",
+                "type": "string"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cotizar",
+          "item": [
+            {
+              "name": "Cotizar",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}{{booking_service}}6a3cb17cbfa3dbd39a9a30d1/quote",
+                  "host": [
+                    "{{base_url}}{{booking_service}}6a3cb17cbfa3dbd39a9a30d1"
+                  ],
+                  "path": [
+                    "quote"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "auth": {
+            "type": "oauth2",
+            "oauth2": [
+              {
+                "key": "tokenType",
+                "value": "Bearer",
+                "type": "string"
+              },
+              {
+                "key": "accessToken",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2YTMwNWRjYTMwZTMxZjg1NDRkMGRmYmIiLCJhdWQiOlsiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3ODIzNTg2ODksImV4cCI6MTc4MjQ0NTA4OSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6Ikd1VTlsU3pRM0NUbVA0WUptVHd3elZqWnhwam5iTVVYIn0.VfmC4k8dQpkKn2kqgBnvF3FTUmTe-jDIpcW1tt9FLWjNi1SU-Q64YlKldZGs_xPItq0Tw3XA5ULMw1Jl-snXSIefUPwrhX_Wwofv88KwJLP0KtxGGRoIgHmpuT-sBKdhWqrV3Mrm88RWJc5E3IQKQpdACgQweCA0k0-NUZYFebDoktvxooTKQSfETBLGdBuKPs3pmnnf6NELPCYIeQpcyJI3CUBKpXA45Epuj0TGmECB6X6eiKPjVpkcM3_SsrDaTnzaMgi3yJMNXcDnWCzBG1d7gTzjnVoTQFMfmA9gNK6QQ4rA89MLlrpvRmYoaIAp35bzpmpaDebQnTTIZL4_Gg",
+                "type": "string"
+              },
+              {
+                "key": "addTokenTo",
+                "value": "header",
+                "type": "string"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Pagar",
+          "item": [
+            {
+              "name": "Pagar",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"methodToken\": \"tok_visa:6sYjkn87Pmns&&o4pq3rs5t\"\r\n  //,\"simulateOutcome\": \"\" //(opcional): \"accepted\" | \"rejected\" | \"pending\" | \"outage\".\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}{{booking_service}}6a3cb17cbfa3dbd39a9a30d1/pay",
+                  "host": [
+                    "{{base_url}}{{booking_service}}6a3cb17cbfa3dbd39a9a30d1"
+                  ],
+                  "path": [
+                    "pay"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "auth": {
+            "type": "oauth2",
+            "oauth2": [
+              {
+                "key": "tokenType",
+                "value": "Bearer",
+                "type": "string"
+              },
+              {
+                "key": "accessToken",
+                "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2YTMwNWRjYTMwZTMxZjg1NDRkMGRmYmIiLCJhdWQiOlsiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3ODIzNTg2ODksImV4cCI6MTc4MjQ0NTA4OSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6Ikd1VTlsU3pRM0NUbVA0WUptVHd3elZqWnhwam5iTVVYIn0.VfmC4k8dQpkKn2kqgBnvF3FTUmTe-jDIpcW1tt9FLWjNi1SU-Q64YlKldZGs_xPItq0Tw3XA5ULMw1Jl-snXSIefUPwrhX_Wwofv88KwJLP0KtxGGRoIgHmpuT-sBKdhWqrV3Mrm88RWJc5E3IQKQpdACgQweCA0k0-NUZYFebDoktvxooTKQSfETBLGdBuKPs3pmnnf6NELPCYIeQpcyJI3CUBKpXA45Epuj0TGmECB6X6eiKPjVpkcM3_SsrDaTnzaMgi3yJMNXcDnWCzBG1d7gTzjnVoTQFMfmA9gNK6QQ4rA89MLlrpvRmYoaIAp35bzpmpaDebQnTTIZL4_Gg",
+                "type": "string"
+              },
+              {
+                "key": "addTokenTo",
+                "value": "header",
+                "type": "string"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar bookings",
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "addTokenTo",
+                  "value": "header",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{booking_service}}",
+              "host": [
+                "{{base_url}}{{booking_service}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "oauth2",
+        "oauth2": [
+          {
+            "key": "addTokenTo",
+            "value": "header",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Traking",
+      "item": [
+        {
+          "name": "subir transfer",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"bookingId\": \"6a3ca2c41ba53643771ac420\",\r\n  \"vehicleId\": 2,\r\n  \"driverId\": \"SWcaYc8zTGP59Tn8jSIh77xojCFOS75b@clients\",\r\n  \"driverName\": \"Laura Silva\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/tracking/transfers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "tracking",
+                "transfers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "comenzar transporte",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth2}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-device-secret",
+                "value": "9a1b3c5d7e8f0a2b4c6d8e0f1a2b3c4d",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/tracking/transfers/4/start",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "tracking",
+                "transfers",
+                "4",
+                "start"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "subir lectura gps",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-device-secret",
+                "value": "change-me-device-secret",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"transferId\": 4,\r\n  \"vehicleId\": 2,\r\n  \"deviceId\": \"tralale3ro3\",\r\n  \"coordinates\": [-56.160040380917626, -34.879295392536574],\r\n  \"timestamp\": \"2026-06-23T10:00:00.000Z\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/tracking/gps/reading",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "tracking",
+                "gps",
+                "reading"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "obtener transportes acticvos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth2}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/tracking/active-transfers?vehicleId=2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "tracking",
+                "active-transfers"
+              ],
+              "query": [
+                {
+                  "key": "vehicleId",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "obtener posicion transporte",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth2}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/tracking/transfers/1/positions",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "tracking",
+                "transfers",
+                "1",
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "finalizar transporte",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth2}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-device-secret",
+                "value": "9a1b3c5d7e8f0a2b4c6d8e0f1a2b3c4d",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/tracking/transfers/1/finish",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "tracking",
+                "transfers",
+                "1",
+                "finish"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "oauth2",
+        "oauth2": [
+          {
+            "key": "tokenType",
+            "value": "Bearer",
+            "type": "string"
+          },
+          {
+            "key": "accessToken",
+            "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2YTNhYzlhYWExYzZhZWI4YmFkZGM3OTUiLCJhdWQiOlsiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3ODIzNTgyNjMsImV4cCI6MTc4MjQ0NDY2Mywic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6Ikd1VTlsU3pRM0NUbVA0WUptVHd3elZqWnhwam5iTVVYIn0.LuBWtJrUsdzcmvXcY8ftKlvkJsNSveN2SndBTBp7TSGCeRzruOb6QDSlc1CU_nT25qLx_bBYfFZNBNVawO2SinqVKs86NT_W3HDTg7QzPGZ_mXfJkHqxv42h_rh9o25ZXYWGblKxDN3Th1DyVNmVlUSvfbcChzhXYNHxnpl8skLVOSQohzQc4yOOpF5ea5KlCrM7tKOQY-2z8hk9g9yM7BnccwoQHqieODgtRNvpzNjmUrYbqh0NCOVPOOrrv3piD8-gdYkVFh3cnDQw5una_9zvmO46GueqwMwaZsHRJdDut4cSGW1WwGqbiia9wcoTENdUnG1pii8e6SI9SW9V3A",
+            "type": "string"
+          },
+          {
+            "key": "addTokenTo",
+            "value": "header",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "tokenType",
+        "value": "Bearer",
+        "type": "string"
+      },
+      {
+        "key": "accessToken",
+        "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2YTNhYzlhYWExYzZhZWI4YmFkZGM3OTUiLCJhdWQiOlsiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3ODIzMzQwOTgsImV4cCI6MTc4MjQyMDQ5OCwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBvZmZsaW5lX2FjY2VzcyIsImF6cCI6Ikd1VTlsU3pRM0NUbVA0WUptVHd3elZqWnhwam5iTVVYIn0.l0ND8FmrZzbjEWklhrKwjyUFNJSLpuT4QHfnbCcypukGVigD4i2lLpVcc4VyMxTgPKB63LVgdUdihYanpyoHcXwZDGd8FSOY1nbyhBTmqQ5yJ1BoXCR3Ea9bEexzsknVl931Cpg7mwh1LsE6VGLwzCgm1wKjoGWFwKqIidHidzRJZttu__P7IckvpWX_cop_z0B1Gw6mv1Zm7_lI3bxmofSjzoVSGkgFrhYy537-EmGhvzK39LTBnoYXYHfa5E6uMEoEi5bBuTZo0TzWL93snBAz9_TRfUuCBVHeDod5Vzmjw4q18yFRZmAL0G1fVWZ7LIO9rpKrAsCM16rd1agC2w",
+        "type": "string"
+      },
+      {
+        "key": "scope",
+        "value": "openid profile email offline_access",
+        "type": "string"
+      },
+      {
+        "key": "authRequestParams",
+        "value": [
+          {
+            "key": "audience",
+            "value": "{{audience}}",
+            "enabled": true,
+            "send_as": "request_url"
+          }
+        ],
+        "type": "any"
+      },
+      {
+        "key": "redirect_uri",
+        "value": "https://oauth.pstmn.io/v1/browser-callback",
+        "type": "string"
+      },
+      {
+        "key": "useBrowser",
+        "value": false,
+        "type": "boolean"
+      },
+      {
+        "key": "authUrl",
+        "value": "{{auth_url}}",
+        "type": "string"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code",
+        "type": "string"
+      },
+      {
+        "key": "refreshRequestParams",
+        "value": [
+          {
+            "key": "audience",
+            "value": "{{audience}}",
+            "enabled": true,
+            "send_as": "request_body"
+          }
+        ],
+        "type": "any"
+      },
+      {
+        "key": "tokenRequestParams",
+        "value": [
+          {
+            "key": "audience",
+            "value": "{{audience}}",
+            "enabled": true,
+            "send_as": "request_body"
+          }
+        ],
+        "type": "any"
+      },
+      {
+        "key": "refreshTokenUrl",
+        "value": "{{access_url}}",
+        "type": "string"
+      },
+      {
+        "key": "clientSecret",
+        "value": "{{client_secret}}",
+        "type": "string"
+      },
+      {
+        "key": "clientId",
+        "value": "{{client_id}}",
+        "type": "string"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "{{access_url}}",
+        "type": "string"
+      },
+      {
+        "key": "tokenName",
+        "value": "Auth0 Token",
+        "type": "string"
+      },
+      {
+        "key": "addTokenTo",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "auth_secret_10bi",
+      "value": ""
+    },
+    {
+      "key": "auth1",
+      "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJHdVU5bFN6UTNDVG1QNFlKbVR3d3pWalp4cGpuYk1VWEBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJpYXQiOjE3ODIyMTc2NzksImV4cCI6MTc4MjMwNDA3OSwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwiYXpwIjoiR3VVOWxTelEzQ1RtUDRZSm1Ud3d6VmpaeHBqbmJNVVgifQ.gOm-l0YDOpUBhrjSM6UYu5H2WvDm649JzsTxOIHBsi47I5O1Mt89-vIFfBPF7IyTqwr7w79IdTB1rbT8xGvLmSEjPQTsULZQ334f0CVCFJU3lj_cv3JqJ_FvAbF_FJcG4I3xa-eMcZNEf6I-C2GC4-V26JC4X7gkWUeXRAtrgUdLSzIZ_0WXZvd8HeaeIQjbC_eNqPiQqOCFuFdI5hT8fCtrBbdQT-5O79UdflByBqkBJ1-Br7RDG8Q2ai-TYDabKbtmE06AUzucy3xy-WXOIHxDGEe3LobWH4hGI8kyODMplul29HjZteEc8XdcI2T3NVXxdDh8j0VFBIdRu8QFlQ"
+    },
+    {
+      "key": "auth2",
+      "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJ2S29fUy1fbENnNkc5ZFFycnN5NiJ9.eyJpc3MiOiJodHRwczovL2Rldi14dmNuZ21kd2RlejJpeHRpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJTV2NhWWM4elRHUDU5VG44alNJaDc3eG9qQ0ZPUzc1YkBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9tb3ZlL2F1dGgiLCJpYXQiOjE3ODIyMTc2OTgsImV4cCI6MTc4MjMwNDA5OCwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwiYXpwIjoiU1djYVljOHpUR1A1OVRuOGpTSWg3N3hvakNGT1M3NWIifQ.Jxzs7P9f_STNjFXAhTEolJT7N9Wzot6ij8m8jcnJbEnpkJCKBuQGDwsjFSzL5gtbD6ZmjrdKYDKxSH_KutFSpA4L58ufCxb8YkFKVRYkqwnVhTZzWBF9wG4kAHddxgSBEnmCQ6oCXGM2KMhQjAP2hVt0I1FiFs30ZeNW9rgF5wii5i5RZ_viGKZ4TA4kzixEYPlhS4p3HW1iMRqB_l0owX9vvAi-YHY1XZA9beQrUmoslcxhsd6dwt4jmkdwRfqTQ-RptFryjLpG-kKbf6Q3jAWsjyiXVpPTwiX2MQbWORYHMbNWc4MInQIX9HhDVa2O-5DUTjdjJxoR05ZQEZPnpQ"
+    },
+    {
+      "key": "domain",
+      "value": "dev-xvcngmdwdez2ixti.us.auth0.com"
+    },
+    {
+      "key": "auth_url",
+      "value": "https://dev-xvcngmdwdez2ixti.us.auth0.com/authorize"
+    },
+    {
+      "key": "access_url",
+      "value": "https://dev-xvcngmdwdez2ixti.us.auth0.com/oauth/token"
+    },
+    {
+      "key": "client_id",
+      "value": "GuU9lSzQ3CTmP4YJmTwwzVjZxpjnbMUX"
+    },
+    {
+      "key": "client_secret",
+      "value": "nqBo5FOXLb8-2O5hnZnpxOzg0OMbeyfKMQKzEfTJmWBpzBuKLQZU0vXEwWS8SnHv"
+    },
+    {
+      "key": "audience",
+      "value": "https://move/auth"
+    },
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080/"
+    },
+    {
+      "key": "identity_service",
+      "value": "identity/"
+    },
+    {
+      "key": "configuration_service",
+      "value": "configuration/"
+    },
+    {
+      "key": "booking_service",
+      "value": "bookings/"
+    },
+    {
+      "key": "origin_id",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}

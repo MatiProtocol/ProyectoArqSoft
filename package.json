@@ -1,0 +1,30 @@
+{
+  "name": "move",
+  "private": true,
+  "scripts": {
+    "install:libs:all": "npm --prefix libs/logs-lib install && npm --prefix libs/errors-lib install && npm --prefix libs/auth-lib install",
+    "install:services:all": "npm --prefix services/identity-service install && npm --prefix services/configuration-service install && npm --prefix services/booking-service install && npm --prefix services/tracking-service install",
+    "install:all": "npm run install:libs:all && npm run install:services:all",
+    "ci:libs:all": "npm --prefix libs/logs-lib ci && npm --prefix libs/errors-lib ci && npm --prefix libs/auth-lib ci && npm run build:libs:all",
+    "ci:services:all": "npm --prefix services/identity-service ci && npm --prefix services/configuration-service ci && npm --prefix services/booking-service ci && npm --prefix services/tracking-service ci",
+    "ci:all": "npm run ci:libs:all && npm run ci:services:all",
+    "build:libs:all": "npm --prefix libs/logs-lib run build && npm --prefix libs/errors-lib run build && npm --prefix libs/auth-lib run build",
+    "build:services:all": "npm --prefix services/identity-service run build && npm --prefix services/configuration-service run build && npm --prefix services/booking-service run build && npm --prefix services/tracking-service run build",
+    "build:all": "npm run build:libs:all && npm run build:services:all",
+    "test:libs:all": "npm --prefix libs/auth-lib run test && npm --prefix libs/logs-lib run test && npm --prefix libs/errors-lib run test",
+    "test:services:all": "npm run build:libs:all && npm --prefix services/identity-service run test && npm --prefix services/configuration-service run test && npm --prefix services/booking-service run test && npm --prefix services/tracking-service run test",
+    "test:all": "npm run test:libs:all && npm run test:services:all",
+    "biome:libs:all": "npm --prefix libs/auth-lib run biome:ci && npm --prefix libs/logs-lib run biome:ci && npm --prefix libs/errors-lib run biome:ci",
+    "biome:services:all": "npm --prefix services/identity-service run biome:ci && npm --prefix services/configuration-service run biome:ci && npm --prefix services/booking-service run biome:ci && npm --prefix services/tracking-service run biome:ci",
+    "biome:all": "npm run biome:libs:all && npm run biome:services:all",
+    "biome:fix:libs:all": "npm --prefix libs/auth-lib run biome:fix && npm --prefix libs/logs-lib run biome:fix && npm --prefix libs/errors-lib run biome:fix",
+    "biome:fix:services:all": "npm --prefix services/identity-service run biome:fix && npm --prefix services/configuration-service run biome:fix && npm --prefix services/booking-service run biome:fix && npm --prefix services/tracking-service run biome:fix",
+    "biome:fix:all": "npm run biome:fix:libs:all && npm run biome:fix:services:all",
+    "infra:up": "docker compose up -d",
+    "infra:down": "docker compose down",
+    "infra:logs": "docker compose logs -f",
+    "nginx:reload": "docker exec move-nginx nginx -s reload",
+    "nginx:test": "docker exec move-nginx nginx -t",
+    "demo": "node scripts/run-demo.js"
+  }
+}

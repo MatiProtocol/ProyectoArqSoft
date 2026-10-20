@@ -1,0 +1,63 @@
+export interface EnvironmentConfig {
+  AUTH0_DOMAIN: string;
+  AUTH0_AUDIENCE: string;
+
+  REDIS_URL: string;
+  CACHE_MAX_ENTRIES: number;
+  CACHE_MAX_AGE: number;
+  TIMEOUT_CACHE: number;
+
+  TIMEOUT_CIRCUIT_BREAKER: number;
+  ERROR_THRESHOLD_PERCENTAGE_CIRCUIT_BREAKER: number;
+  RESET_TIMEOUT_CIRCUIT_BREAKER: number;
+  ROLLING_COUNT_TIMEOUT_CIRCUIT_BREAKER: number;
+  ROLLING_COUNT_BUCKETS_CIRCUIT_BREAKER: number;
+  NAME_CIRCUIT_BREAKER: string;
+}
+
+export function loadEnv(): EnvironmentConfig {
+  const AUTH0_AUDIENCE = process.env.AUTH0_AUDIENCE ?? 'your-auth0-domain';
+  const AUTH0_DOMAIN = process.env.AUTH0_DOMAIN ?? 'your-auth0-domain';
+  const REDIS_URL = process.env.REDIS_URL ?? 'redis://localhost:6379';
+  const CACHE_MAX_ENTRIES = parseInt(process.env.CACHE_MAX_ENTRIES ?? '5', 10);
+  const CACHE_MAX_AGE = parseInt(process.env.CACHE_MAX_AGE ?? '600000', 10);
+  const TIMEOUT_CACHE = parseInt(process.env.TIMEOUT_CACHE ?? '5000', 10);
+  const TIMEOUT_CIRCUIT_BREAKER = parseInt(process.env.TIMEOUT_CIRCUIT_BREAKER ?? '5000', 10);
+
+  const ERROR_THRESHOLD_PERCENTAGE_CIRCUIT_BREAKER = parseInt(
+    process.env.ERROR_THRESHOLD_PERCENTAGE_CIRCUIT_BREAKER_AUTH0 ?? '50',
+    10
+  );
+  const RESET_TIMEOUT_CIRCUIT_BREAKER = parseInt(
+    process.env.RESET_TIMEOUT_CIRCUIT_BREAKER_AUTH0 ?? '30000',
+    10
+  );
+  const ROLLING_COUNT_TIMEOUT_CIRCUIT_BREAKER = parseInt(
+    process.env.ROLLING_COUNT_TIMEOUT_CIRCUIT_BREAKER__AUTH0 ?? '10000',
+    10
+  );
+  const ROLLING_COUNT_BUCKETS_CIRCUIT_BREAKER = parseInt(
+    process.env.ROLLING_COUNT_BUCKETS_CIRCUIT_BREAKER_AUTH0 ?? '10',
+    10
+  );
+  const NAME_CIRCUIT_BREAKER = process.env.NAME_CIRCUIT_BREAKER_AUTH0 ?? 'auth0-validation';
+
+  return {
+    AUTH0_DOMAIN,
+    AUTH0_AUDIENCE,
+
+    REDIS_URL,
+    CACHE_MAX_ENTRIES,
+    CACHE_MAX_AGE,
+    TIMEOUT_CACHE,
+
+    TIMEOUT_CIRCUIT_BREAKER,
+    ERROR_THRESHOLD_PERCENTAGE_CIRCUIT_BREAKER,
+    RESET_TIMEOUT_CIRCUIT_BREAKER,
+    ROLLING_COUNT_TIMEOUT_CIRCUIT_BREAKER,
+    ROLLING_COUNT_BUCKETS_CIRCUIT_BREAKER,
+    NAME_CIRCUIT_BREAKER,
+  };
+}
+
+export const env = loadEnv();

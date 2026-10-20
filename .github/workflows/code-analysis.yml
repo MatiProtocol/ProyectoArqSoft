@@ -1,0 +1,210 @@
+name: Code Analysis
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+    paths:
+    - "services/**/*.ts"
+    - "services/**/biome.json"
+    - "services/**/package.json"
+    - "libs/**/*.ts"
+    - "libs/**/biome.json"
+    - "libs/**/package.json"
+    - "package.json"
+    - ".github/workflows/code-analysis.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  biome-check-all:
+    name: Services and Libs code analysis (Biome)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+    
+      - name: Cache node_modules per package
+        uses: actions/cache@v4
+        with:
+          path: |
+            services/*/node_modules
+            libs/*/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies (all libs and services)
+        run: npm run ci:all
+
+      - name: Run Biome checks per package
+        id: run_biome
+        run: |
+            for dir in libs/*/ services/*/; do
+            if [[ -f "${dir}package.json" ]]; then
+                echo "🔍 Checking $dir"
+                cd "$dir"
+                npm run biome:ci
+                cd - > /dev/null
+            else
+                echo "⚠️ Skipping $dir (no package.json)"
+            fi
+            done
+
+      - name: Combine and report Biome results
+        id: analysis
+        shell: bash
+        run: |
+          python3 <<'EOF'
+          import json, os, sys, glob
+          from pathlib import Path
+
+          base_dir = os.getcwd()
+          report_files = glob.glob("services/*/biome-report.json", recursive=True) + glob.glob("libs/*/biome-report.json", recursive=True)
+
+          issues = []
+          table_rows = []
+          parsing_errors = []
+
+          for report_path in report_files:
+              service_dir = os.path.dirname(report_path)
+              service_name = os.path.basename(service_dir)
+              try:
+                  with open(report_path, "r", encoding="utf-8") as f:
+                      data = json.load(f)
+              except Exception as e:
+                  parsing_errors.append(f"⚠️ No se pudo parsear {report_path}: {e}")
+                  continue
+
+              diagnostics = data.get("diagnostics", [])
+              if not isinstance(diagnostics, list):
+                  continue
+
+              for diag in diagnostics:
+                  # --- Mensaje ---
+                  message = diag.get("message", "")
+                  if not isinstance(message, str):
+                      message = str(message)
+                  message = message.replace("|", "\\|").replace("\n", " ")
+
+                  # --- Regla y herramienta ---
+                  category = diag.get("category", "")
+                  if not isinstance(category, str):
+                      category = str(category)
+                  
+                  if category == "format":
+                      tool = "Biome Format"
+                      rule = "format"
+                  elif category.startswith("assist/") or category.startswith("lint/"):
+                      tool = "Biome Lint"
+                      rule = category
+                  else:
+                      tool = "Biome"
+                      rule = category if category else "unknown"
+                  
+                  full_rule = f"{tool}: {rule}"
+
+                  # --- Ubicación: archivo, línea, columna ---
+                  location = diag.get("location", {})
+                  if not isinstance(location, dict):
+                      location = {}
+                  
+                  path_val = location.get("path", "unknown")
+                  file_path = path_val.replace("\\", "/")
+                  
+                  if os.path.isabs(file_path):
+                      try:
+                          file_path = os.path.relpath(file_path, base_dir)
+                      except ValueError:
+                          pass
+                  else:
+                      full_path = os.path.join(service_dir, file_path)
+                      if os.path.exists(full_path):
+                          file_path = os.path.relpath(full_path, base_dir)
+                  
+                  start = location.get("start", {})
+                  if isinstance(start, dict):
+                      line = start.get("line", "?")
+                      col = start.get("column", "?")
+                  else:
+                      line = col = "?"
+                  
+                  table_rows.append([
+                      f"{service_name}/{file_path}", line, col, full_rule, message
+                  ])
+                  issues.append(f"{full_rule} in {service_name}/{file_path}:{line} - {message}")
+
+          issue_count = len(issues)
+          error_count = len(parsing_errors)
+
+          if table_rows or parsing_errors:
+              table = "| Service / File | Line | Column | Tool / Rule | Description |\n"
+              table += "|----------------|------|--------|-------------|-------------|\n"
+              for row in table_rows:
+                  table += f"| `{row[0]}` | {row[1]} | {row[2]} | `{row[3]}` | {row[4]} |\n"
+              for err in parsing_errors:
+                  table += f"| ⚠️ **Error** | | | | {err} |\n"
+              table += "|----------------|------|--------|-------------|-------------|\n"
+              if issue_count == 0 and error_count == 0:
+                  table += "| **Total** | | | | **✅ 0 issues** |\n"
+                  table += "\n*¡Perfecto! No se encontraron problemas de lint o formato.* 🚀\n"
+              else:
+                  table += f"| **Total** | | | | **❌ {issue_count} issues** |\n"
+                  if error_count:
+                      table += f"| **Advertencias** | | | | ⚠️ {error_count} error(es) al parsear reportes |\n"
+                  table += "\n*Por favor corrige los problemas señalados antes de mergear.*\n"
+          else:
+              table = "## 🔍 Code Analysis Results\n\n"
+              table += "No se encontraron reportes de Biome o no se pudieron procesar.\n"
+              table += "Asegúrate de que `npm run biome:ci` genere correctamente `biome-report.json` en cada servicio.\n"
+
+          summary_file = os.environ.get("GITHUB_STEP_SUMMARY", "")
+          if summary_file:
+              with open(summary_file, "a", encoding="utf-8") as f:
+                  f.write("\n## 🔍 Code Analysis (All Services)\n\n")
+                  f.write(table)
+
+          with open("analysis_table.md", "w", encoding="utf-8") as f:
+              f.write("## 🔍 Code Analysis Results\n\n")
+              f.write(table)
+
+          print("\n" + table)
+
+          if issue_count > 0:
+              print(f"❌ Code analysis failed with {issue_count} issue(s).", file=sys.stderr)
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as gh_out:
+                  gh_out.write("failed=true\n")
+              sys.exit(1)
+          else:
+              print("✅ All Code Analysis checks passed (or no issues found).")
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as gh_out:
+                  gh_out.write("failed=false\n")
+          EOF
+
+      - name: Upload Biome reports as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: biome-reports
+          path: |
+            services/*/biome-report.json
+            libs/*/biome-report.json
+          retention-days: 1
+        if: always()
+
+      - name: Comment PR with analysis table
+        if: ${{ failure() && github.event_name == 'pull_request' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: biome-analysis
+          recreate: true
+          path: ./analysis_table.md

@@ -1,0 +1,44 @@
+{
+  "name": "booking-service",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "simulator": "ts-node-dev --transpile-only scripts/client-simulator.ts",
+    "test": "jest --ci --coverage --reporters=default --reporters=jest-junit",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "biome:check": "biome check .",
+    "biome:ci": "biome check . --reporter json --diagnostic-level=error > biome-report.json || true",
+    "biome:fix": "biome check --write ."
+  },
+  "dependencies": {
+    "@google/genai": "^2.8.0",
+    "@move/auth-lib": "file:../../libs/auth-lib",
+    "@move/errors-lib": "file:../../libs/errors-lib",
+    "@move/logs-lib": "file:../../libs/logs-lib",
+    "bullmq": "^5.79.0",
+    "express": "^4.22.2",
+    "express-async-errors": "^3.1.1",
+    "express-oauth2-jwt-bearer": "^1.9.0",
+    "gcp-metadata": "^7.0.1",
+    "googleapis": "^173.0.0",
+    "mongoose": "^9.7.0",
+    "nodemailer": "^9.0.1",
+    "opossum": "^9.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.16",
+    "@types/express": "^4.17.25",
+    "@types/jest": "^30.0.0",
+    "@types/mongoose": "^5.11.96",
+    "@types/node": "^20.12.7",
+    "@types/nodemailer": "^8.0.1",
+    "@types/opossum": "^8.1.9",
+    "jest": "^30.4.2",
+    "jest-junit": "^17.0.0",
+    "ts-jest": "^29.4.11",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  }
+}

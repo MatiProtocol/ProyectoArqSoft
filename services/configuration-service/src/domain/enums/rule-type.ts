@@ -1,0 +1,5 @@
+export enum RuleType {
+  MONITORING = 'MONITORING',
+  ALERTS = 'ALERTS',
+  SURCHARGE = 'SURCHARGE',
+}

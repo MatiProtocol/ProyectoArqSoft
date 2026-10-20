@@ -1,0 +1,191 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: move-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: app
+      MONGO_INITDB_ROOT_PASSWORD: app
+      MONGO_INITDB_DATABASE: move
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: move-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: move-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend-geo:/usr/share/nginx/html:ro
+    depends_on:
+      identity-service:
+        condition: service_healthy
+      booking-service:
+        condition: service_healthy
+      configuration-service:
+        condition: service_healthy
+      tracking-service:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      
+  identity-service:
+    build:
+      context: .
+      dockerfile: services/identity-service/Dockerfile
+    container_name: identity-service
+    restart: unless-stopped
+    ports:
+      - "4001:4001"
+    env_file:
+      - .env
+    environment:
+      PORT: ${IDENTITY_SERVICE_PORT}
+      NODE_ENV: development
+      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+      AUTH0_DOMAIN: ${AUTH0_DOMAIN}
+      MONGO_URL: ${MONGO_URL}
+      IDENTITY_INTERNAL_TOKEN: ${IDENTITY_INTERNAL_TOKEN}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4001/health',(r)=>{process.exit(r.statusCode===200?0:1)})"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  booking-service:
+    build:
+      context: .
+      dockerfile: services/booking-service/Dockerfile
+    container_name: booking-service
+    restart: unless-stopped
+    ports:
+      - "4002:4002"
+    env_file:
+      - .env
+    environment:
+      PORT: ${BOOKING_SERVICE_PORT}
+      NODE_ENV: development
+      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+      AUTH0_DOMAIN: ${AUTH0_DOMAIN}
+      MONGO_URL: ${MONGO_URL}
+      IDENTITY_SERVICE_URL: ${IDENTITY_SERVICE_URL}
+      IDENTITY_INTERNAL_TOKEN: ${IDENTITY_INTERNAL_TOKEN}
+      IDENTITY_SERVICE_TIMEOUT_MS: ${IDENTITY_SERVICE_TIMEOUT_MS:-5000}
+      CONFIGURATION_SERVICE_URL: ${CONFIGURATION_SERVICE_URL}
+      CONFIGURATION_INTERNAL_TOKEN: ${CONFIGURATION_INTERNAL_TOKEN}
+      CONFIGURATION_SERVICE_TIMEOUT_MS: ${CONFIGURATION_SERVICE_TIMEOUT_MS:-5000}
+      REDIS_URL: ${REDIS_URL}
+      GOOGLE_GENAI_API_KEY: ${GOOGLE_GENAI_API_KEY}
+      GEMINI_MODEL: ${GEMINI_MODEL}
+      GEMINI_TIMEOUT_MS: ${GEMINI_TIMEOUT_MS:-10000}
+      GEMINI_CLASSIFICATION_PROMPT: ${GEMINI_CLASSIFICATION_PROMPT}
+      OPERATOR_WEBHOOK_URL: ${OPERATOR_WEBHOOK_URL}
+      GMAIL_USER: ${GMAIL_USER}
+      GMAIL_CLIENT_ID: ${GMAIL_CLIENT_ID}
+      GMAIL_CLIENT_SECRET: ${GMAIL_CLIENT_SECRET}
+      GMAIL_REFRESH_TOKEN: ${GMAIL_REFRESH_TOKEN}
+      GMAIL_TIMEOUT_MS: ${GMAIL_TIMEOUT_MS:-10000}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4002/health',(r)=>{process.exit(r.statusCode===200?0:1)})"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  configuration-service:
+    build:
+      context: .
+      dockerfile: services/configuration-service/Dockerfile
+    container_name: configuration-service
+    restart: unless-stopped
+    ports:
+      - "4003:4003"
+    env_file:
+      - .env
+    environment:
+      PORT: ${CONFIGURATION_SERVICE_PORT}
+      NODE_ENV: development
+      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+      AUTH0_DOMAIN: ${AUTH0_DOMAIN}
+      MONGO_URL: ${MONGO_URL}
+      CONFIGURATION_INTERNAL_TOKEN: ${CONFIGURATION_INTERNAL_TOKEN}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4003/health',(r)=>{process.exit(r.statusCode===200?0:1)})"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  tracking-service:
+    build:
+      context: .
+      dockerfile: services/tracking-service/Dockerfile
+    container_name: tracking-service
+    restart: unless-stopped
+    ports:
+      - "4004:4004"
+    env_file:
+      - .env
+    environment:
+      PORT: ${TRACKING_SERVICE_PORT}
+      NODE_ENV: development
+      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+      AUTH0_DOMAIN: ${AUTH0_DOMAIN}
+      MONGO_URL: ${MONGO_URL}
+      REDIS_URL: ${REDIS_URL}
+      OPERATOR_WEBHOOK_URL: ${OPERATOR_WEBHOOK_URL}
+      GPS_DEVICE_SECRET: ${GPS_DEVICE_SECRET}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4004/health',(r)=>{process.exit(r.statusCode===200?0:1)})"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  mongo_data:
+  redis_data:
